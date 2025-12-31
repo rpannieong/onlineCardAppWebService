@@ -30,7 +30,7 @@ app.listen(port, () => {
 app.get('/allcards', async (req, res) => {
    try{
        let connection = await mysql.createConnection(dbConfig);
-       const[rows] = await connection.execute('SELECT * FROM defaultdb.cards');
+       const[rows] = await connection.execute('SELECT * FROM cards');
        res.json(rows);
    } catch (err) {
         console.error(err);
@@ -43,7 +43,7 @@ app.post('/addcard', async (req, res) => {
     const { card_name, card_pic } = req.body;
     try{
         let connection = await mysql.createConnection(dbConfig);
-        await connection.execute('INSERT INTO defaultdb.cards (card_name, card_pic) VALUES (?, ?)', [card_name, card_pic]);
+        await connection.execute('INSERT INTO cards (card_name, card_pic) VALUES (?, ?)', [card_name, card_pic]);
         res.status(201).json({ message: 'Card ' + card_name + ' added successfully!' });
     } catch (err) {
         console.error(err);
@@ -56,7 +56,7 @@ app.post('/updatecard', async (req, res) => {
     const { id, card_name, card_pic } = req.body;
     try{
         let connection = await mysql.createConnection(dbConfig);
-        await connection.execute('UPDATE defaultdb.cards SET card_name=?, card_pic=? WHERE id=?', [card_name, card_pic, id]);
+        await connection.execute('UPDATE cards SET card_name=?, card_pic=? WHERE id=?', [card_name, card_pic, id]);
         res.status(201).json({ message: 'Card ' + id + ' updated successfully!' });
     } catch (err) {
         console.error(err);
@@ -69,7 +69,7 @@ app.post('/deletecard', async (req, res) => {
     const { id } = req.body;
     try{
         let connection = await mysql.createConnection(dbConfig);
-        await connection.execute('DELETE FROM defaultdb.cards WHERE id=?', [id]);
+        await connection.execute('DELETE FROM cards WHERE id=?', [id]);
         res.status(201).json({ message: 'Card ' + id + ' deleted successfully!' });
     } catch (err) {
         console.error(err);
